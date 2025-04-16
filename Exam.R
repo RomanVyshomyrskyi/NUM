@@ -75,13 +75,6 @@ poly_basis <- list(
 coeff_poly <- least_squares_approx(i_val, y_val, poly_basis)
 print(coeff_poly)  # display the coefficients
 
-Horner <- function(a,x){
-  n <- length(a)
-  y <- a[n]
-  for(i in (n-1):1) y <- y*x+a[i]
-  return(y)
-}
-
 aprox_y_val <- sapply(i_val, function(xi) {
   sum(mapply(function(c, phi) c * phi(xi), coeff_poly, poly_basis))
 })
