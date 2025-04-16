@@ -29,11 +29,33 @@ for (j in seq_along(i_val)) {
 }
 
 
-plot(i_vals, y_vals, type = "b", pch = 19, col = "blue",
+plot(i_val, y_val, type = "b", pch = 19, col = "blue",
      xlab = "i", ylab = expression(y(i) == I[N](i) - I[A]))
 abline(h = 0, col = "red", lty = 2)
 
-print(y_vals)
+print(y_val)
 
 
+least_squares_fit <- function(x, y) {
+  
+  x_mean <- mean(x)
+  y_mean <- mean(y)
+  
+  b <- sum((x - x_mean) * (y - y_mean)) / sum((x - x_mean)^2)
+  a <- y_mean - b * x_mean
+  
+  y_fit <- a + b * x
+  
+  plot(x, y, main = "Manual Least Squares Fit", xlab = "x", ylab = "y", pch = 19)
+  
+  
+  lines(x, y_fit, col = "green", lwd = 2)
+  
+  eq <- paste0("y = ", round(a, 2), " + ", round(b, 2), " * x")
+  legend("topleft", legend = eq, bty = "n", col = "green", lwd = 2)
+  
+  return(list(intercept = a, slope = b))
+}
+
+least_squares_fit(i_val, y_val)
 
