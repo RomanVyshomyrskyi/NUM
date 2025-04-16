@@ -100,9 +100,9 @@ We want to approximate the numerical error $y(i)$ using a linear combination of 
 where:
 \begin{itemize}
   \item $\varphi_0(i) = 1$
-  \item $\varphi_1(i) = \frac{1}{2^i}$ (exponential decay)
-  \item $\varphi_2(i) = \frac{1}{i}$ (harmonic decay)
-  \item $\varphi_3(i) = \frac{1}{i^2}$ (polynomial decay)
+  \item $\varphi_1(i) = \frac{1}{2^x}$ (exponential decay)
+  \item $\varphi_2(i) = \frac{1}{x}$ (harmonic decay)
+  \item $\varphi_3(i) = \frac{1}{x^2}$ (polynomial decay)
 \end{itemize}
 
 We construct a design matrix $A$ where $A[i,j] = \varphi_j(i)$, and solve the normal equations:
