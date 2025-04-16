@@ -18,7 +18,7 @@ midpoint_integral <- function(f, a, b, n) {
 }
 
 
-i_val <- 0:20
+i_val <- 0:25
 y_val <- numeric(length(i_val))
 
 for (j in seq_along(i_val)) {
@@ -26,6 +26,12 @@ for (j in seq_along(i_val)) {
   n <- 2^i
   I_numericke <- midpoint_integral(f, 1, 2, n)
   y_val[j] <- I_numericke - I_analyticke
+  if (j>1){
+    if (abs(y_val[j])> abs(y_val[j-1])){
+      print(j)
+    }
+  }
+
 }
 
 
@@ -36,26 +42,17 @@ abline(h = 0, col = "red", lty = 2)
 print(y_val)
 
 
-least_squares_fit <- function(x, y) {
-  
-  x_mean <- mean(x)
-  y_mean <- mean(y)
-  
-  b <- sum((x - x_mean) * (y - y_mean)) / sum((x - x_mean)^2)
-  a <- y_mean - b * x_mean
-  
-  y_fit <- a + b * x
-  
+
+plot(i_val, 1/y_val)
+
+LSA <- function(x, y, n=6) {
+  X <- outer(x, 0:(n-1), "^")
+  a <- solve(t(X) %*% X, t(X) %*% y)
   plot(x, y, main = "Manual Least Squares Fit", xlab = "x", ylab = "y", pch = 19)
-  
-  
+  y_fit <- a[1] + a[2] * x + a[3] * x**2 + a[4] * x**3  + a[5] * x**4 + a[6]* x**5
   lines(x, y_fit, col = "green", lwd = 2)
-  
-  eq <- paste0("y = ", round(a, 2), " + ", round(b, 2), " * x")
-  legend("topleft", legend = eq, bty = "n", col = "green", lwd = 2)
-  
-  return(list(intercept = a, slope = b))
+  return(a)
 }
 
-least_squares_fit(i_val, y_val)
+LSA(i_val, y_val)
 
