@@ -96,7 +96,7 @@ abline(h = 0, col = "red", lty = 2)
 \newpage
 \section{Least Squares Approximation of the Error Function}
 We want to approximate the numerical error $y(i)$ using a linear combination of basis functions:
-\[ y(i) \approx c_0 \cdot \varphi_0(i) + c_1 \cdot \varphi_1(i) + c_2 \cdot \varphi_2(i) + c_3 \cdot \varphi_3(i) \]
+\[ y(i) \approx x_0 \cdot \varphi_0(i) + x_1 \cdot \varphi_1(i) + x_2 \cdot \varphi_2(i) + x_3 \cdot \varphi_3(i) \]
 where:
 \begin{itemize}
   \item $\varphi_0(i) = 1$
@@ -106,7 +106,7 @@ where:
 \end{itemize}
 
 We construct a design matrix $A$ where $A[i,j] = \varphi_j(i)$, and solve the normal equations:
-\[ (A^T A)\vec{c} = A^T \vec{y} \]
+\[ (A^T A)\vec{x} = A^T \vec{y} \]
 
 \begin{lstlisting}[caption=Least squares approximation function]
 least_squares_approx <- function(x, y, basis_functions) {
