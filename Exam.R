@@ -18,7 +18,7 @@ midpoint_integral <- function(f, a, b, n) {
 }
 
 
-i_val <- 0:25
+i_val <- 1:20
 y_val <- numeric(length(i_val))
 
 for (j in seq_along(i_val)) {
@@ -42,17 +42,49 @@ abline(h = 0, col = "red", lty = 2)
 print(y_val)
 
 
-
-plot(i_val, 1/y_val)
-
-LSA <- function(x, y, n=6) {
-  X <- outer(x, 0:(n-1), "^")
-  a <- solve(t(X) %*% X, t(X) %*% y)
-  plot(x, y, main = "Manual Least Squares Fit", xlab = "x", ylab = "y", pch = 19)
-  y_fit <- a[1] + a[2] * x + a[3] * x**2 + a[4] * x**3  + a[5] * x**4 + a[6]* x**5
-  lines(x, y_fit, col = "green", lwd = 2)
-  return(a)
+least_squares_approx <- function(x, y, basis_functions) {
+  # Ensure x and y are vectors of the same length
+  if(length(x) != length(y)) {
+    stop("x and y must have the same length")
+  }
+  
+  m <- length(x)
+  n <- length(basis_functions)
+  
+  # Initialize design matrix A (m rows, n columns)
+  A <- matrix(0, nrow = m, ncol = n)
+  
+  # Fill matrix: A[i, j] = phi_j(x_i)
+  for (j in 1:n) {
+    A[, j] <- basis_functions[[j]](x)  # Apply basis function j to all x
+  }
+  
+  # Solve the normal equations: (A^T A) c = A^T y
+  coeff <- solve(t(A) %*% A, t(A) %*% y)
+  
+  return(as.vector(coeff))
 }
 
-LSA(i_val, y_val)
+poly_basis <- list(
+  function(x) 1,
+  function(x) 1 / (2^x),
+  function(x) 1 / x,
+  function(x) 1 / (x^2)
+)
 
+coeff_poly <- least_squares_approx(i_val, y_val, poly_basis)
+# coeff_poly will contain [c0, c1, c2] for c0 + c1*x + c2*x^2
+print(coeff_poly)  # display the coefficients
+
+Horner <- function(a,x){
+  n <- length(a)
+  y <- a[n]
+  for(i in (n-1):1) y <- y*x+a[i]
+  return(y)
+}
+
+aprox_y_val <- sapply(i_val, function(xi) {
+  sum(mapply(function(c, phi) c * phi(xi), coeff_poly, poly_basis))
+})
+
+lines(i_val, aprox_y_val, col = "darkgreen", lwd = 2)
