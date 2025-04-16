@@ -9,7 +9,7 @@ midpoint_integral <- function(f, a, b, n) {
   I <- 0
   
   for (i in 0:(n - 1)) {
-    xi <- a + i * h + h / 2  # середина підінтервалу
+    xi <- a + i * h + h / 2 
     Si <- h * f(xi)
     I <- I + Si
   }
@@ -18,7 +18,7 @@ midpoint_integral <- function(f, a, b, n) {
 }
 
 
-i_val <- 1:20
+i_val <- 1:24
 y_val <- numeric(length(i_val))
 
 for (j in seq_along(i_val)) {
@@ -73,7 +73,6 @@ poly_basis <- list(
 )
 
 coeff_poly <- least_squares_approx(i_val, y_val, poly_basis)
-# coeff_poly will contain [c0, c1, c2] for c0 + c1*x + c2*x^2
 print(coeff_poly)  # display the coefficients
 
 Horner <- function(a,x){
